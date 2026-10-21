@@ -3,9 +3,473 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Yeah</title>
+    <title>Water Facts</title>
+    <style>
+      :root {
+        --desktop: #008080;
+        --gray: #c0c0c0;
+        --light: #ffffff;
+        --mid: #dfdfdf;
+        --dark: #808080;
+        --black: #000000;
+        --blue: #000080;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: var(--desktop);
+        color: #000;
+        font-family: Tahoma, "MS Sans Serif", Arial, sans-serif;
+        font-size: 13px;
+        padding: 28px 18px 58px;
+      }
+      .window {
+        max-width: 850px;
+        margin: 0 auto;
+        background: var(--gray);
+        border: 2px solid;
+        border-color: var(--light) var(--black) var(--black) var(--light);
+        box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
+        padding: 3px;
+      }
+      .titlebar {
+        height: 27px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 3px 4px;
+        color: white;
+        background: linear-gradient(90deg, #000080, #1084d0);
+        font-weight: bold;
+        letter-spacing: 0.1px;
+      }
+      .title-left {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+      }
+      .tiny-icon {
+        width: 17px;
+        height: 17px;
+        background: #fff;
+        color: #000080;
+        border: 1px solid #fff;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        font-weight: bold;
+      }
+      .window-controls {
+        display: flex;
+        gap: 3px;
+      }
+      .control {
+        width: 20px;
+        height: 18px;
+        background: var(--gray);
+        border: 2px solid;
+        border-color: var(--light) var(--black) var(--black) var(--light);
+        color: #000;
+        line-height: 12px;
+        text-align: center;
+        font-size: 12px;
+      }
+      .menubar {
+        display: flex;
+        gap: 18px;
+        padding: 7px 8px;
+      }
+      .menubar span:first-letter {
+        text-decoration: underline;
+      }
+      .toolbar {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        border-top: 1px solid var(--dark);
+        border-bottom: 1px solid var(--light);
+        padding: 7px;
+        color: #333;
+      }
+      .address-label {
+        font-weight: bold;
+      }
+      .address {
+        flex: 1;
+        min-width: 0;
+        background: #fff;
+        border: 2px solid;
+        border-color: var(--dark) var(--light) var(--light) var(--dark);
+        padding: 4px 6px;
+        font-family: "Courier New", monospace;
+      }
+      main {
+        margin: 8px;
+        background: white;
+        border: 2px solid;
+        border-color: var(--dark) var(--light) var(--light) var(--dark);
+        padding: 22px clamp(14px, 4vw, 38px) 30px;
+        line-height: 1.5;
+      }
+      .eyebrow {
+        color: #555;
+        font-family: "Courier New", monospace;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+      h1 {
+        font-size: clamp(25px, 5vw, 38px);
+        margin: 5px 0 4px;
+      }
+      .subtitle {
+        margin-top: 0;
+        color: #444;
+        font-size: 15px;
+      }
+      hr {
+        border: 0;
+        border-top: 1px solid #808080;
+        border-bottom: 1px solid #fff;
+        margin: 20px 0;
+      }
+      h2 {
+        font-size: 18px;
+        margin: 0 0 8px;
+        padding-bottom: 4px;
+        border-bottom: 1px solid #b0b0b0;
+      }
+      h3 {
+        font-size: 14px;
+        margin: 0 0 5px;
+      }
+      .definition-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 14px;
+        margin: 14px 0 22px;
+      }
+      .card {
+        background: #f1f1f1;
+        border: 1px solid #999;
+        padding: 13px;
+        box-shadow: inset 1px 1px white;
+      }
+      .tag {
+        display: inline-block;
+        background: #000080;
+        color: white;
+        font-size: 10px;
+        padding: 1px 5px;
+        margin-bottom: 7px;
+        font-weight: bold;
+        text-transform: uppercase;
+      }
+      .note {
+        border: 1px solid #b6a35b;
+        background: #fffbdc;
+        padding: 12px 14px;
+        margin: 16px 0;
+      }
+      ul {
+        padding-left: 22px;
+      }
+      li {
+        margin: 7px 0;
+      }
+      .fact-number {
+        font-family: "Courier New", monospace;
+        font-weight: bold;
+      }
+      .statusbar {
+        display: flex;
+        gap: 4px;
+        padding: 2px 4px 3px;
+        color: #333;
+        font-size: 11px;
+      }
+      .status-cell {
+        border: 1px solid;
+        border-color: var(--dark) var(--light) var(--light) var(--dark);
+        padding: 3px 7px;
+      }
+      .taskbar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 38px;
+        background: var(--gray);
+        border-top: 2px solid var(--light);
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        padding: 4px;
+        z-index: 5;
+      }
+      .start {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-weight: bold;
+        background: var(--gray);
+        padding: 4px 9px;
+        height: 28px;
+        border: 2px solid;
+        border-color: var(--light) var(--black) var(--black) var(--light);
+      }
+      .start-mark {
+        color: #008000;
+        font-size: 17px;
+      }
+      .task {
+        height: 27px;
+        min-width: 180px;
+        max-width: 300px;
+        flex: 1;
+        padding: 5px 9px;
+        background: #bdbdbd;
+        border: 2px solid;
+        border-color: var(--dark) var(--light) var(--light) var(--dark);
+        font-weight: bold;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+      .clock {
+        border: 1px solid;
+        border-color: var(--dark) var(--light) var(--light) var(--dark);
+        padding: 5px 9px;
+        margin-left: auto;
+        white-space: nowrap;
+      }
+      footer {
+        color: #555;
+        font-size: 11px;
+        margin-top: 20px;
+      }
+      a {
+        color: #0000ee;
+      }
+      @media (max-width: 480px) {
+        body {
+          padding: 10px 6px 50px;
+        }
+        .menubar {
+          gap: 12px;
+        }
+        .toolbar {
+          gap: 5px;
+        }
+        .task {
+          min-width: 80px;
+        }
+        main {
+          margin: 5px;
+          padding: 18px 13px;
+        }
+      }
+    </style>
   </head>
   <body>
-    <h1>wahoo</h1>
+    <div class="window">
+      <div class="titlebar">
+        <div class="title-left">
+          <span class="tiny-icon">e</span> Water Facts - Microsoft Internet
+          Explorer
+        </div>
+        <div class="window-controls" aria-hidden="true">
+          <span class="control">_</span><span class="control">□</span
+          ><span class="control">×</span>
+        </div>
+      </div>
+      <div class="menubar" aria-label="Menu">
+        <span>File</span><span>Edit</span><span>View</span><span>Favorites</span
+        ><span>Tools</span><span>Help</span>
+      </div>
+      <div class="toolbar">
+        <span>← Back</span><span>→</span><span>⟳</span><span>⌂</span>
+        <span class="address-label">Address</span>
+        <div class="address">C:\INTERNET\WATER\INDEX.HTML</div>
+      </div>
+
+      <main>
+        <div class="eyebrow">The Little Reference Desk · Est. 1998</div>
+        <h1>Water & Other Things</h1>
+        <p class="subtitle">
+          A small collection of definitions, useful distinctions, and facts that
+          might come in handy someday.
+        </p>
+        <hr />
+
+        <section>
+          <h2>01 / Water terminology</h2>
+          <div class="definition-grid">
+            <article class="card">
+              <span class="tag">Definition 001</span>
+              <h3>What is a well?</h3>
+              <p>
+                A <strong>well</strong> is a hole or shaft dug, drilled, or
+                bored into the ground to access groundwater. Water enters from
+                surrounding soil or rock, often through a casing or screened
+                section.
+              </p>
+              <p>
+                Wells may be used for drinking water, irrigation, industrial
+                purposes, or monitoring groundwater.
+              </p>
+            </article>
+            <article class="card">
+              <span class="tag">Definition 002</span>
+              <h3>What is a drinking water source?</h3>
+              <p>
+                A <strong>drinking water source</strong> is the natural supply
+                or system from which water intended for human consumption
+                originates. Examples include groundwater wells, springs, lakes,
+                rivers, and reservoirs.
+              </p>
+              <p>
+                The source is not necessarily the tap: water may need treatment,
+                storage, and distribution before it is safe to drink.
+              </p>
+            </article>
+            <article class="card">
+              <span class="tag">Definition 003</span>
+              <h3>Groundwater vs. surface water</h3>
+              <p>
+                <strong>Groundwater</strong> is water stored beneath Earth's
+                surface in the spaces and fractures of soil and rock. An
+                <strong>aquifer</strong> is a geological formation that can
+                store and transmit useful quantities of groundwater.
+              </p>
+              <p>
+                <strong>Surface water</strong> is found above ground, in places
+                such as streams, lakes, and reservoirs.
+              </p>
+            </article>
+            <article class="card">
+              <span class="tag">Definition 004</span>
+              <h3>What is a watershed?</h3>
+              <p>
+                A <strong>watershed</strong> is an area of land where rain and
+                melting snow drain toward a shared outlet, such as a stream,
+                lake, or river.
+              </p>
+              <p>
+                What happens on the land—fertilizer use, road runoff,
+                construction, or spills—can affect water downstream.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <section>
+          <h2>02 / A quick distinction</h2>
+          <div class="note">
+            <strong>Remember:</strong> A well is a way to access water. A
+            drinking water source is where water for drinking comes from. A well
+            can be a drinking water source, but not every drinking water source
+            is a well.
+          </div>
+        </section>
+
+        <section>
+          <h2>03 / Random facts</h2>
+          <ul>
+            <li>
+              <span class="fact-number">01.</span> Pure water freezes at 0°C
+              (32°F) and boils at 100°C (212°F) at standard atmospheric
+              pressure.
+            </li>
+            <li>
+              <span class="fact-number">02.</span> Water expands when it
+              freezes, which is why ice is less dense than liquid water and
+              floats.
+            </li>
+            <li>
+              <span class="fact-number">03.</span> Groundwater can move very
+              slowly through some aquifers—sometimes only inches or feet per
+              day, though rates vary widely.
+            </li>
+            <li>
+              <span class="fact-number">04.</span> The water cycle has no true
+              starting point: evaporation, condensation, precipitation,
+              infiltration, and runoff are connected processes.
+            </li>
+            <li>
+              <span class="fact-number">05.</span> Most of Earth's water is
+              salty. Only a small fraction is freshwater, and much of that
+              freshwater is locked in glaciers and ice caps or stored
+              underground.
+            </li>
+            <li>
+              <span class="fact-number">06.</span> Sound travels faster in water
+              than in air, because the physical properties of water transmit
+              pressure waves more quickly.
+            </li>
+            <li>
+              <span class="fact-number">07.</span> A clear glass of water is not
+              proof that the water is safe. Some contaminants have no obvious
+              taste, smell, or color.
+            </li>
+            <li>
+              <span class="fact-number">08.</span> The word “salary” is often
+              linked historically to the Latin word <em>salarium</em>; the
+              popular claim that Roman soldiers were literally paid in salt is
+              debated.
+            </li>
+            <li>
+              <span class="fact-number">09.</span> Octopuses have three hearts:
+              two pump blood through the gills, and one pumps it to the rest of
+              the body.
+            </li>
+            <li>
+              <span class="fact-number">10.</span> Bananas are berries in the
+              botanical sense; strawberries are not considered true berries by
+              that same definition.
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>04 / Practical note</h2>
+          <p>
+            If you rely on a private well, regular testing matters. The
+            appropriate tests and schedule depend on local guidance and possible
+            contaminants. In the United States, your state or local health
+            department can explain how to test for bacteria, nitrate, and other
+            locally relevant concerns.
+          </p>
+        </section>
+
+        <hr />
+        <footer>
+          <p>
+            Document ID: WF-001 &nbsp;|&nbsp; Last updated: Whenever someone
+            remembers
+          </p>
+          <p>
+            This page was generated by AI. It is not a substitute for local
+            public health guidance. Consult your local water service or health
+            department for information specific to your area.
+          </p>
+        </footer>
+      </main>
+      <div class="statusbar">
+        <div class="status-cell">Done</div>
+        <div class="status-cell">Internet zone: Local Intranet</div>
+        <div class="status-cell">Encoding: Western European</div>
+      </div>
+    </div>
+
+    <div class="taskbar">
+      <div class="start"><span class="start-mark">❖</span> Start</div>
+      <div class="task">Water Facts - Microsoft Internet Explorer</div>
+      <div class="clock">10:42 AM</div>
+    </div>
   </body>
 </html>
